@@ -7,4 +7,13 @@ export class CapacitorCookiesWeb extends WebPlugin implements CapacitorCookiesPl
     console.log('ECHO', options);
     return options;
   }
+
+  async getCookies(options: { url: string; }): Promise<{ cookie: string }> {
+    console.log('get cookies: ' + options);
+    return { cookie: document.cookie};
+  }
+  async setCookie(options:  { url: string, value: string, key: string}): Promise<{ cookie: string}> {
+    console.log('set cookies: ' + options);
+    return { cookie: document.cookie};
+  }
 }
