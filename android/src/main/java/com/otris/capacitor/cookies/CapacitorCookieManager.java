@@ -98,48 +98,6 @@ public class CapacitorCookieManager extends CookieManager {
     }
 
     /**
-     * Gets a cookie value for the given URL and key.
-     * @param url the URL for which the cookies are requested
-     * @param key the key of the cookie to search for
-     * @return the {@code HttpCookie} value of the cookie at the key,
-     *         otherwise it will return a new empty {@code HttpCookie}
-     */
-    public HttpCookie getCookie(String url, String key) {
-        HttpCookie[] cookies = getCookies(url);
-        for (HttpCookie cookie : cookies) {
-            if (cookie.getName().equals(key)) {
-                return cookie;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets an array of {@code HttpCookie} given a URL.
-     * @param url the URL for which the cookies are requested
-     * @return an {@code HttpCookie} array of non-expired cookies
-     */
-    public HttpCookie[] getCookies(String url) {
-        try {
-            ArrayList<HttpCookie> cookieList = new ArrayList<>();
-            String cookieString = getCookieString(url);
-            if (cookieString != null) {
-                String[] singleCookie = cookieString.split(";");
-                for (String c : singleCookie) {
-                    HttpCookie parsed = HttpCookie.parse(c).get(0);
-                    parsed.setValue(parsed.getValue());
-                    cookieList.add(parsed);
-                }
-            }
-            HttpCookie[] cookies = new HttpCookie[cookieList.size()];
-            return cookieList.toArray(cookies);
-        } catch (Exception ex) {
-            return new HttpCookie[0];
-        }
-    }
-
-    /**
      * Sets a cookie for the given URL. Any existing cookie with the same host, path and name will
      *  be replaced with the new cookie. The cookie being set will be ignored if it is expired.
      * @param url the URL for which the cookie is to be set
@@ -156,29 +114,9 @@ public class CapacitorCookieManager extends CookieManager {
         }
     }
 
-    /**
-     * Sets a cookie for the given URL. Any existing cookie with the same host, path and name will
-     *  be replaced with the new cookie. The cookie being set will be ignored if it is expired.
-     * @param url the URL for which the cookie is to be set
-     * @param key the {@code HttpCookie} name to use for lookup
-     * @param value the value of the {@code HttpCookie} given a key
-     */
-    public void setCookie(String url, String key, String value) {
-        String cookieValue = key + "=" + value;
-        setCookie(url, cookieValue);
-    }
-
     public void setCookie(String url, String key, String value, String expires, String path) {
         String cookieValue = key + "=" + value + "; expires=" + expires + "; path=" + path;
         setCookie(url, cookieValue);
-    }
-
-    /**
-     * Removes all cookies. This method is asynchronous.
-     */
-    public void removeAllCookies() {
-        webkitCookieManager.removeAllCookies(null);
-        flush();
     }
 
     /**

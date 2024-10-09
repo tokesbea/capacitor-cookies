@@ -19,18 +19,7 @@ import java.nio.charset.StandardCharsets;
 @CapacitorPlugin(name = "CapacitorCookies")
 public class CapacitorCookiesPlugin extends Plugin {
 
-    private CapacitorCookies implementation = new CapacitorCookies();
     private CapacitorCookieManager cookieManager;
-
-    @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
-
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
-        call.resolve(ret);
-    }
-
 
     @Override
     public void load() {
@@ -55,7 +44,6 @@ public class CapacitorCookiesPlugin extends Plugin {
 
     @JavascriptInterface
     public void setCookie(String domain, String action) {
-
         cookieManager.setCookie(domain, action);
     }
 
@@ -101,5 +89,4 @@ public class CapacitorCookiesPlugin extends Plugin {
         }
         call.resolve(cookieMap);
     }
-
 }
